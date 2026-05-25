@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VillFlow — Global Push-to-Talk Voice Assistant for Windows</title>
+  <title>VillFlow — Global Push-to-Talk Voice Assistant & AI Command Injector</title>
   <link rel="icon" type="image/svg+xml" href="../public/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,18 +162,15 @@
     .step-title { font-size: var(--text-base); font-weight: 700; }
     .step-desc { font-size: var(--text-sm); color: var(--color-text-muted); }
 
-    /* ── CTA BLOCK ── */
-    .cta-block { text-align: center; padding: clamp(var(--space-16), 10vw, var(--space-24)) var(--space-6); background: linear-gradient(to bottom, var(--color-surface), var(--color-bg)); border-top: 1px solid var(--color-divider); }
-    .cta-block h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--space-4); }
-    .cta-block p { font-size: var(--text-lg); color: var(--color-text-muted); max-width: 48ch; margin-inline: auto; margin-bottom: var(--space-8); }
-
-    /* ── FOOTER ── */
-    footer { background: var(--color-surface); border-top: 1px solid var(--color-divider); padding: var(--space-8) var(--space-6); }
-    .footer-inner { max-width: var(--content-wide); margin-inline: auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); }
-    .footer-copy { font-size: var(--text-xs); color: var(--color-text-faint); }
-    .footer-links { display: flex; gap: var(--space-5); }
-    .footer-links a { font-size: var(--text-xs); color: var(--color-text-faint); }
-    .footer-links a:hover { color: var(--color-text-muted); }
+    /* ── ARCHITECTURE SECTION (DEVELOPER PARITY) ── */
+    .architecture-diagram { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-6); margin-top: var(--space-10); position: relative; }
+    .arch-card { background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-lg); padding: var(--space-5); text-align: left; position: relative; }
+    .arch-card::after { content: '→'; position: absolute; right: -16px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--color-text-faint); font-weight: bold; }
+    @media (max-width: 768px) { .arch-card::after { content: '↓'; bottom: -20px; right: 50%; top: auto; transform: translateX(50%); } }
+    .architecture-diagram .arch-card:last-child::after { display: none; }
+    .arch-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 8px; }
+    .arch-subtitle { font-size: var(--text-sm); font-weight: 600; margin-bottom: 6px; }
+    .arch-desc { font-size: 12px; color: var(--color-text-muted); line-height: 1.5; }
 
     /* ── DOWNLOAD AREA ── */
     .download-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); margin-top: var(--space-6); text-align: left; }
@@ -208,6 +205,19 @@
       cursor: not-allowed;
       background: var(--color-surface-offset);
     }
+
+    /* ── CTA BLOCK ── */
+    .cta-block { text-align: center; padding: clamp(var(--space-16), 10vw, var(--space-24)) var(--space-6); background: linear-gradient(to bottom, var(--color-surface), var(--color-bg)); border-top: 1px solid var(--color-divider); }
+    .cta-block h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+    .cta-block p { font-size: var(--text-lg); color: var(--color-text-muted); max-width: 48ch; margin-inline: auto; margin-bottom: var(--space-8); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--color-surface); border-top: 1px solid var(--color-divider); padding: var(--space-8) var(--space-6); }
+    .footer-inner { max-width: var(--content-wide); margin-inline: auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); }
+    .footer-copy { font-size: var(--text-xs); color: var(--color-text-faint); }
+    .footer-links { display: flex; gap: var(--space-5); }
+    .footer-links a { font-size: var(--text-xs); color: var(--color-text-faint); }
+    .footer-links a:hover { color: var(--color-text-muted); }
 
     /* ── INTERACTIVE MOCKUP ── */
     .mockup-container { margin-top: var(--space-12); position: relative; max-width: 800px; margin-inline: auto; border: 1px solid var(--color-divider); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column; height: 420px; }
@@ -255,6 +265,7 @@
     </div>
     <div class="nav-actions">
       <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#architecture">Architecture</a>
       <a class="nav-link" href="#how-it-works">How It Works</a>
       <a class="nav-link" href="#download">Download</a>
       <button class="btn-icon" id="themeToggle" aria-label="Toggle theme">
@@ -382,6 +393,38 @@
     <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Secure Key Vault</div></div>
   </div>
 </div>
+
+<!-- ARCHITECTURE SECTION (DEVELOPER PARITY) -->
+<section class="section" id="architecture" style="background: var(--color-surface); text-align: center; border-bottom: 1px solid var(--color-divider);">
+  <div class="container--wide">
+    <div class="section-tag">System Data Flow</div>
+    <h2 class="section-title">Under the hood of VillFlow</h2>
+    <p class="section-subtitle" style="margin-inline: auto;">How speech travels from your microphone directly into your active window as clean text or parsed commands.</p>
+    
+    <div class="architecture-diagram">
+      <div class="arch-card">
+        <div class="arch-title">01 / Trigger & Record</div>
+        <div class="arch-subtitle">Global Key Hook</div>
+        <div class="arch-desc">Tauri binds to low-level Windows keyboard hooks. Holding caps lock starts capture via your microphone using the Rust <code>cpal</code> crate.</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-title">02 / Real-time Transcribe</div>
+        <div class="arch-subtitle">Speechmatics WebSocket</div>
+        <div class="arch-desc">Audio is captured and streamed over WebSockets directly to Speechmatics for low-latency, highly accurate, multilingual transcribing.</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-title">03 / AI Formatting</div>
+        <div class="arch-subtitle">Groq LLM Cleanups</div>
+        <div class="arch-desc">The raw transcript is sent to Groq LLaMA models. It runs local instructions to clean up filler words, format bullet points, or interpret instructions in Command Mode.</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-title">04 / Keystroke Injector</div>
+        <div class="arch-subtitle">Virtual Keyboard</div>
+        <div class="arch-desc">The finalized text is injected directly into your active window cursor location using character-by-character keyboard emulation (Enigo) or clipboard paste.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- DOWNLOAD SECTION -->
 <section class="section" id="download" style="text-align: center; border-bottom: 1px solid var(--color-divider);">
