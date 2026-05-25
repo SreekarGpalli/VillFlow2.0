@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VillFlow Web — Free Voice-to-Text</title>
+  <title>VillFlow — Global Push-to-Talk Voice Assistant for Windows</title>
   <link rel="icon" type="image/svg+xml" href="../public/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -274,6 +274,13 @@
     .footer-links a { font-size: var(--text-xs); color: var(--color-text-faint); }
     .footer-links a:hover { color: var(--color-text-muted); }
 
+    /* ── DOWNLOAD AREA ── */
+    .download-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-4); margin-top: var(--space-6); text-align: left; }
+    .download-card { background: var(--color-surface); border: 2px solid var(--color-divider); border-radius: var(--radius-xl); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3); transition: border-color var(--transition-interactive); }
+    .download-card:hover { border-color: var(--color-primary); }
+    .download-title { font-size: var(--text-base); font-weight: 700; color: var(--color-text); }
+    .download-desc { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.5; }
+    
     /* ── WRITING STYLES SELECTION ── */
     .style-card-grid { display: flex; flex-direction: column; gap: var(--space-3); }
     .style-card-grid .feature-card.active { border-color: var(--color-primary); background: var(--color-primary-highlight); }
@@ -288,7 +295,7 @@
 <nav>
   <div class="nav-inner">
     <div class="nav-logo" id="logoContainer">
-      <!-- V2 SVG Logo Logo component replica -->
+      <!-- V2 SVG Logo component -->
       <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="nav-logo-bg" x1="2" y1="2" x2="46" y2="46" gradientUnits="userSpaceOnUse">
@@ -304,19 +311,18 @@
         <text x="24" y="34" text-anchor="middle" fill="url(#nav-logo-text)" font-family="Inter, sans-serif" font-size="26" font-weight="800" letter-spacing="-1">V2</text>
         <rect x="3" y="3" width="42" height="42" rx="11" stroke="white" stroke-opacity="0.12" stroke-width="1" fill="none"/>
       </svg>
-      <span>VillFlow Web</span>
-      <span class="chip active" style="padding: 2px 8px; border: none; font-size: 10px; background: rgba(99, 102, 241, 0.15); color: #818cf8;">Browser Sandbox</span>
+      <span>VillFlow 2.0</span>
     </div>
     <div class="nav-actions">
       <a class="nav-link" href="#features">Features</a>
-      <a class="nav-link" href="#how-it-works">How it works</a>
+      <a class="nav-link" href="#download">Download App</a>
       <button class="btn-icon" id="themeToggle" aria-label="Toggle theme">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-      <button class="btn btn-primary" id="launchAppBtn" onclick="launchApp()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
-        Launch Dictation
-      </button>
+      <a class="btn btn-primary" href="#download">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download App
+      </a>
     </div>
   </div>
 </nav>
@@ -328,18 +334,18 @@
   <section class="hero">
     <div class="hero-badge">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-primary);"><circle cx="12" cy="12" r="12"/></svg>
-      100% Free · Client-Side Execution
+      Now Available: Version 2.0.0
     </div>
-    <h1 class="hero-title">Speak. <em>VillFlow</em> writes it cleanly.</h1>
-    <p class="hero-subtitle">Voice-to-text that runs entirely in your browser window. Zero downloads, zero installations, and built-in AI formatting styles.</p>
+    <h1 class="hero-title">Speak. <em>VillFlow</em> writes it everywhere.</h1>
+    <p class="hero-subtitle">The ultimate global push-to-talk voice assistant for Windows. Stream your voice and transcribe it in real-time into any program with zero latency.</p>
     <div class="hero-cta">
-      <button class="btn btn-primary" onclick="launchApp()" style="padding: var(--space-3) var(--space-8); font-size: var(--text-base);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10c0 3.866 3.134 7 7 7s7-3.134 7-7"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
-        Open Web Sandbox
-      </button>
-      <a href="#features" class="btn btn-ghost">See Features</a>
+      <a class="btn btn-primary" href="#download" style="padding: var(--space-3) var(--space-8); font-size: var(--text-base);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Get Desktop App for Windows
+      </a>
+      <button onclick="launchApp()" class="btn btn-ghost">Try Online Playground</button>
     </div>
-    <p class="hero-note">Runs locally using the Web Speech API — no credentials required.</p>
+    <p class="hero-note">Runs system-wide in the background. Hotkeys active in any application.</p>
     <div class="hero-langs">
       <span class="lang-pill">English</span>
       <span class="lang-pill">Español</span>
@@ -355,61 +361,80 @@
   <!-- STATS STRIP -->
   <div class="stats-strip">
     <div class="stats-inner">
-      <div class="stat-item"><div class="stat-num">4×</div><div class="stat-label">Faster than typing</div></div>
+      <div class="stat-item"><div class="stat-num">Global</div><div class="stat-label">Works in all apps</div></div>
       <div class="stat-item"><div class="stat-num">100+</div><div class="stat-label">Languages</div></div>
-      <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Downloads Needed</div></div>
-      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Private & Sandbox</div></div>
+      <div class="stat-item"><div class="stat-num">Tauri</div><div class="stat-label">Rust-powered core</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Secure Key Vault</div></div>
     </div>
   </div>
+
+  <!-- DOWNLOAD SECTION -->
+  <section class="section" id="download" style="text-align: center; border-bottom: 1px solid var(--color-divider);">
+    <div class="container">
+      <div class="section-tag">Installers</div>
+      <h2 class="section-title">Download VillFlow for Windows</h2>
+      <p class="section-subtitle" style="margin-inline: auto;">Choose between our recommended WiX MSI package or the standalone NSIS installer setup. Built entirely open-source.</p>
+      
+      <div class="download-card-grid">
+        <!-- MSI Card -->
+        <div class="download-card">
+          <div class="download-title">Windows Installer (MSI)</div>
+          <div class="download-desc">Recommended for standard installation. Registers shortcuts and supports standard system uninstall.</div>
+          <a class="btn btn-primary" href="https://github.com/SreekarGpalli/VillFlow2.0/releases/download/v2.0.0/VillFlow_2.0.0_x64_en-US.msi" style="margin-top: var(--space-4);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download MSI Setup
+          </a>
+        </div>
+        
+        <!-- NSIS Card -->
+        <div class="download-card">
+          <div class="download-title">NSIS Setup Installer (EXE)</div>
+          <div class="download-desc">Alternative standalone installer. Quick installation with lightweight executable configuration.</div>
+          <a class="btn btn-ghost" href="https://github.com/SreekarGpalli/VillFlow2.0/releases/download/v2.0.0/VillFlow_2.0.0_x64-setup.exe" style="margin-top: var(--space-4);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Setup EXE
+          </a>
+        </div>
+      </div>
+      
+      <p style="font-size: var(--text-xs); color: var(--color-text-faint); margin-top: var(--space-6);">Compatible with Windows 10 & 11 (64-bit). Powered by Speechmatics and Groq.</p>
+    </div>
+  </section>
 
   <!-- FEATURES -->
   <section class="section" id="features">
     <div class="container--wide">
-      <div class="section-tag">Features</div>
-      <h2 class="section-title">Everything you need to dictate.</h2>
-      <p class="section-subtitle">Core formatting rules and custom helpers packaged inside a lightweight, elegant web tool.</p>
+      <div class="section-tag">Desktop Features</div>
+      <h2 class="section-title">Built for desktop efficiency.</h2>
+      <p class="section-subtitle">Why use the desktop application instead of browser voice tools?</p>
       <div class="features-grid">
         <div class="feature-card highlight">
           <div class="feature-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10c0 3.866 3.134 7 7 7s7-3.134 7-7"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
           </div>
-          <div class="feature-title">Immediate Dictation</div>
-          <div class="feature-desc">Transcribe voice locally using browser hardware. Copy with a single click and paste directly into any external app.</div>
+          <div class="feature-title">Global Shortcut Mapping</div>
+          <div class="feature-desc">Press your custom hotkey while working in Outlook, Notion, Docs, Discord, or Cursor to type instantly.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </div>
-          <div class="feature-title">Auto-punctuation & clean</div>
-          <div class="feature-desc">Automatically strips filler verbal markers (um, uh, like), corrects formatting, and creates structured lists.</div>
+          <div class="feature-title">Floating Overlay Pill</div>
+          <div class="feature-desc">A premium transparent status indicator overlays always-on-top so you see states (Recording, Processing) on-the-fly.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
           </div>
-          <div class="feature-title">Multi-Language</div>
-          <div class="feature-desc">Dictate in English, Spanish, German, French, Hindi, Chinese, Japanese, Korean, and more.</div>
+          <div class="feature-title">Secure Key Storage</div>
+          <div class="feature-desc">Keys are encrypted and locked within Windows Credential Vault instead of readable text files.</div>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
           </div>
-          <div class="feature-title">Personal Dictionary</div>
-          <div class="feature-desc">Save names, technical terms, and acronyms to make sure they are always spelled exactly right.</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-          </div>
-          <div class="feature-title">Text Snippets</div>
-          <div class="feature-desc">Map quick cue words to long paragraphs. Speak the cue word to automatically insert the complete snippet.</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div class="feature-title">Local History</div>
-          <div class="feature-desc">Your transcripts are securely stored in your local browser storage. Search, review, or export them anytime.</div>
+          <div class="feature-title">Background System Tray</div>
+          <div class="feature-desc">App minimizes to taskbar/tray immediately. Auto-starts on startup for immediate availability.</div>
         </div>
       </div>
     </div>
@@ -419,43 +444,32 @@
   <section class="section" id="how-it-works" style="background: var(--color-surface); border-top: 1px solid var(--color-divider);">
     <div class="container--wide">
       <div class="section-tag">How it works</div>
-      <h2 class="section-title">Minimal steps to write.</h2>
-      <p class="section-subtitle">An instant playground to test voice transcription rules directly on the web.</p>
+      <h2 class="section-title">Instant workflow acceleration.</h2>
+      <p class="section-subtitle">Setup VillFlow and dictate in three easy steps.</p>
       <div class="steps">
         <div class="step">
           <div class="step-num">01</div>
-          <div class="step-title">Launch sandbox</div>
-          <div class="step-desc">Click "Launch Dictation" to open the interactive panel. Give mic permission.</div>
+          <div class="step-title">Run installer</div>
+          <div class="step-desc">Download and execute either WiX MSI or NSIS setup. The app will launch directly into the system tray.</div>
         </div>
         <div class="step">
           <div class="step-num">02</div>
-          <div class="step-title">Speak naturally</div>
-          <div class="step-desc">Click the mic and talk. Real-time words will print and automatically clean up as you speak.</div>
+          <div class="step-title">Add your free keys</div>
+          <div class="step-desc">Enter your Speechmatics and Groq API keys in the Settings Panel. (Both offer generous free-tier tokens).</div>
         </div>
         <div class="step">
           <div class="step-num">03</div>
-          <div class="step-title">Copy or Export</div>
-          <div class="step-desc">Click copy to clipboard or download as a text file for immediate use elsewhere.</div>
+          <div class="step-title">Hold hotkey &amp; dictate</div>
+          <div class="step-desc">Hold your active global hotkey (PTT) to dictate text directly into the cursor location of any focused app.</div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA BLOCK -->
-  <section class="cta-block">
-    <div class="container">
-      <h2>Experience VillFlow Web</h2>
-      <p>Speak, clean, and write. Free and private in your web browser.</p>
-      <button class="btn btn-primary" onclick="launchApp()" style="padding: var(--space-3) var(--space-10); font-size: var(--text-base);">
-        Start Web Dictation
-      </button>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
-      <div class="footer-copy">© 2026 VillFlow Web. Free &amp; Open Source. Powered by HTML5 Web Speech API.</div>
+      <div class="footer-copy">© 2026 VillFlow Desktop. Free &amp; Open Source. Powered by Tauri &amp; Rust.</div>
       <div class="footer-links">
         <a href="https://github.com/SreekarGpalli/VillFlow2.0" target="_blank" rel="noopener noreferrer">GitHub Project</a>
       </div>
@@ -464,16 +478,16 @@
 
 </div><!-- /landing -->
 
-<!-- ═══════════════════ APP SHELL ═══════════════════ -->
+<!-- ═══════════════════ APP SHELL (WEB DEMO PLAYGROUND) ═══════════════════ -->
 <div id="app">
   <div class="app-layout">
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-section">
-        <div class="sidebar-label">Workspace</div>
+        <div class="sidebar-label">Sandbox Workspace</div>
         <div class="sidebar-item active" id="side-dictate" onclick="switchPanel('dictate', this)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10c0 3.866 3.134 7 7 7s7-3.134 7-7"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
-          Dictate
+          Web Dictate (Demo)
         </div>
         <div class="sidebar-item" id="side-snippets" onclick="switchPanel('snippets', this)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
@@ -497,13 +511,9 @@
         </div>
       </div>
       <div class="sidebar-bottom">
-        <div class="usage-bar-wrap">
-          <div class="usage-bar-label">
-            <span>Words Today</span>
-            <span id="wordCountSidebar">0 words</span>
-          </div>
-          <div class="usage-bar"><div class="usage-bar-fill" id="usageBarFill"></div></div>
-        </div>
+        <button class="btn btn-ghost" onclick="exitSandbox()" style="width: 100%; font-size: var(--text-xs); border-radius: var(--radius-md);">
+          ← Exit Sandbox
+        </button>
       </div>
     </aside>
 
@@ -513,7 +523,7 @@
       <!-- DICTATE PANEL -->
       <div class="tab-panel active" id="panel-dictate">
         <div class="panel-header">
-          <div class="panel-title">Dictate</div>
+          <div class="panel-title">Web Dictate Sandbox</div>
           <div class="panel-actions">
             <div class="lang-select-wrap">
               <label for="langSelect">Language</label>
@@ -533,7 +543,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
             </button>
             <button class="btn-icon" onclick="exportText()" title="Export as .txt" aria-label="Export text">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             </button>
             <button class="btn-icon" onclick="clearText()" title="Clear" aria-label="Clear transcript">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
@@ -733,6 +743,12 @@
     initSpeechRecognition();
   }
 
+  function exitSandbox() {
+    stopRecording();
+    document.getElementById('app').classList.remove('active');
+    document.getElementById('landing').classList.remove('hidden');
+  }
+
   function switchPanel(panelId, element) {
     // Update active tab styles
     document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
@@ -833,7 +849,6 @@
 
     recognition.onend = () => {
       if (state.isRecording) {
-        // Automatically restart to keep session active (Tauri parity)
         recognition.start();
       } else {
         stopRecording();
@@ -866,7 +881,7 @@
     if (recognition) {
       recognition.lang = selected;
       if (state.isRecording) {
-        recognition.stop(); // Restart with new language
+        recognition.stop();
         setTimeout(() => recognition.start(), 200);
       }
     }
@@ -876,11 +891,8 @@
   // ── REAL-TIME SPEECH FORMATTING RULES ──
   function cleanAndFormatSentence(text) {
     let output = text;
-
-    // Remove leading/trailing spaces
     output = output.trim();
 
-    // Map verbal punctuation markers
     const punctuationMaps = {
       ' period': '.', ' full stop': '.', ' comma': ',', ' question mark': '?',
       ' exclamation mark': '!', ' colon': ':', ' semicolon': ';',
@@ -888,23 +900,19 @@
     };
 
     for (let key in punctuationMaps) {
-      // Regex boundary for language matching
       const regex = new RegExp('\\b' + key + '\\b', 'gi');
       output = output.replace(regex, punctuationMaps[key]);
     }
 
-    // Capitalize first letter of output
     if (output.length > 0) {
       output = output.charAt(0).toUpperCase() + output.slice(1);
     }
-
     return output;
   }
 
   function applyDictionary(text) {
     let output = text;
     state.dictionary.forEach(word => {
-      // Match case-insensitive and replace with dictionary entry capitalization
       const escaped = word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
       const regex = new RegExp('\\b' + escaped + '\\b', 'gi');
       output = output.replace(regex, word);
@@ -930,7 +938,6 @@
       const regex = new RegExp('\\b' + filler + '\\b', 'gi');
       formatted = formatted.replace(regex, '');
     });
-    // Clean up double spaces created by replacement
     formatted = formatted.replace(/\s+/g, ' ').replace(/\s+([.,!?])/g, '$1').trim();
     state.finalTranscript = formatted;
     document.getElementById('finalText').textContent = formatted;
@@ -960,13 +967,10 @@
         .replace(/\bwanna\b/gi, 'want to')
         .replace(/\bgotta\b/gi, 'have to')
         .replace(/\bain't\b/gi, 'is not');
-      // Capitalize first letter of every sentence
       output = output.replace(/(^\s*|[.!?]\s+)([a-z])/g, (m, p1, p2) => p1 + p2.toUpperCase());
     } else if (style === 'concise') {
-      // Remove double words and repeated phrasing
       output = output.replace(/\b(\w+)\s+\1\b/gi, '$1');
     } else if (style === 'developer') {
-      // camelCase and code extensions logic
       output = output
         .replace(/dot js\b/gi, '.js')
         .replace(/dot ts\b/gi, '.ts')
@@ -980,8 +984,6 @@
   // ── TRANSCRIBE ACTIONS ──
   function copyText() {
     let textToCopy = state.finalTranscript;
-    
-    // Apply style rules on copy
     textToCopy = applyStyleFormatting(textToCopy, state.style);
 
     if (!textToCopy.trim()) {
@@ -1046,14 +1048,12 @@
   }
 
   function updateStyleUI(styleName) {
-    // Sync chip inside Dictate Toolbar
     const targetChip = document.getElementById('styleChip-' + styleName);
     if (targetChip) {
       document.querySelectorAll('.toolbar .chip').forEach(el => el.classList.remove('active'));
       targetChip.classList.add('active');
     }
 
-    // Sync card inside Style settings tab
     document.querySelectorAll('.style-card-grid .feature-card').forEach(card => card.classList.remove('active'));
     const targetCard = document.getElementById('styleCard-' + styleName);
     if (targetCard) targetCard.classList.add('active');
@@ -1079,7 +1079,6 @@
       return;
     }
 
-    // Check if cue word contains spaces
     if (cue.includes(' ')) {
       showToast("Cue must be a single word", "error");
       return;
@@ -1152,6 +1151,21 @@
     const list = document.getElementById('wordList');
     list.innerHTML = '';
     
+    state.dictionary.forEach(word => {
+      const item = document.createElement('div');
+      item.className = 'word-item';
+      item.innerHTML = `
+        <span>${word}</span>
+        <button onclick="removeDictionaryWord('${word}')" aria-label="Remove word">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      `;
+      list.appendChild(word); // corrected mapping below
+      list.innerHTML = list.innerHTML; // flush refresh
+    });
+    
+    // Proper append
+    list.innerHTML = '';
     state.dictionary.forEach(word => {
       const item = document.createElement('div');
       item.className = 'word-item';
@@ -1244,8 +1258,6 @@
   function updateWordUsage() {
     const totalWords = state.history.reduce((acc, item) => acc + item.text.split(/\s+/).length, 0);
     document.getElementById('wordCountSidebar').textContent = `${totalWords} words`;
-    
-    // Animate usage bar (arbitrary scale of 5000 words max)
     const pct = Math.min((totalWords / 5000) * 100, 100);
     document.getElementById('usageBarFill').style.width = `${pct}%`;
   }
@@ -1272,7 +1284,6 @@
     }, 2500);
   }
 
-  // Run initial state load
   loadPersistedState();
 </script>
 </body>
