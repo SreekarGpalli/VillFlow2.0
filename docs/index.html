@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VillFlow Web — Free Voice-to-Text</title>
+  <link rel="icon" type="image/svg+xml" href="../public/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* ── DESIGN TOKENS ── */
+    :root, [data-theme="light"] {
+      --color-bg: #f7f6f2;
+      --color-surface: #f9f8f5;
+      --color-surface-2: #fbfbf9;
+      --color-surface-offset: #f3f0ec;
+      --color-surface-dynamic: #e6e4df;
+      --color-divider: #dcd9d5;
+      --color-border: #d4d1ca;
+      --color-text: #28251d;
+      --color-text-muted: #7a7974;
+      --color-text-faint: #bab9b4;
+      --color-primary: #6366f1;
+      --color-primary-hover: #4f46e5;
+      --color-primary-active: #3730a3;
+      --color-primary-highlight: #e0e7ff;
+      --color-success: #437a22;
+      --color-error: #a12c7b;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12);
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --text-hero: clamp(2.8rem, 0.5rem + 6vw, 7rem);
+      --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
+      --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem;
+      --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
+      --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+      --font-display: 'Instrument Serif', Georgia, serif;
+      --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+      --content-narrow: 640px;
+      --content-default: 960px;
+      --content-wide: 1200px;
+    }
+    [data-theme="dark"] {
+      --color-bg: #0e0d0c;
+      --color-surface: #141311;
+      --color-surface-2: #1a1917;
+      --color-surface-offset: #1d1c1a;
+      --color-surface-dynamic: #2d2c2a;
+      --color-divider: #262523;
+      --color-border: #393836;
+      --color-text: #cdccca;
+      --color-text-muted: #797876;
+      --color-text-faint: #5a5957;
+      --color-primary: #818cf8;
+      --color-primary-hover: #6366f1;
+      --color-primary-active: #4f46e5;
+      --color-primary-highlight: #1e1b4b;
+      --color-success: #6daa45;
+      --color-error: #d163a7;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme]) {
+      --color-bg: #0e0d0c; --color-surface: #141311; --color-surface-2: #1a1917;
+      --color-surface-offset: #1d1c1a; --color-surface-dynamic: #2d2c2a;
+      --color-divider: #262523; --color-border: #393836; --color-text: #cdccca;
+      --color-text-muted: #797876; --color-text-faint: #5a5957;
+      --color-primary: #818cf8; --color-primary-hover: #6366f1; --color-primary-active: #4f46e5;
+      --color-primary-highlight: #1e1b4b; --color-success: #6daa45; --color-error: #d163a7;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2); --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+    }}
+
+    /* ── BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { min-height: 100dvh; font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text); background: var(--color-bg); line-height: 1.6; transition: background-color 0.3s, color 0.3s; }
+    img, svg { display: block; max-width: 100%; }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; display: inline-flex; align-items: center; justify-content: center; }
+    a { color: inherit; text-decoration: none; }
+    h1,h2,h3,h4 { text-wrap: balance; line-height: 1.15; }
+    p, li { text-wrap: pretty; }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
+    a, button, [role="button"] { transition: color var(--transition-interactive), background var(--transition-interactive), box-shadow var(--transition-interactive), transform var(--transition-interactive), opacity var(--transition-interactive); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    /* ── LAYOUT ── */
+    .container { max-width: var(--content-default); margin-inline: auto; padding-inline: var(--space-6); }
+    .container--wide { max-width: var(--content-wide); margin-inline: auto; padding-inline: var(--space-6); }
+
+    /* ── NAV ── */
+    nav { position: sticky; top: 0; z-index: 100; background: color-mix(in oklab, var(--color-bg) 85%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-divider); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) var(--space-6); max-width: var(--content-wide); margin-inline: auto; }
+    .nav-logo { display: flex; align-items: center; gap: var(--space-2.5); font-weight: 700; font-size: var(--text-base); letter-spacing: -0.02em; }
+    .nav-logo svg { color: var(--color-primary); }
+    .nav-actions { display: flex; align-items: center; gap: var(--space-3); }
+    .nav-link { font-size: var(--text-sm); color: var(--color-text-muted); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); }
+    .nav-link:hover { color: var(--color-text); background: var(--color-surface-offset); }
+
+    /* ── BUTTONS ── */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-2.5) var(--space-5); border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 600; white-space: nowrap; cursor: pointer; }
+    .btn-primary { background: var(--color-primary); color: #fff; box-shadow: var(--shadow-sm); }
+    .btn-primary:hover { background: var(--color-primary-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+    .btn-primary:active { background: var(--color-primary-active); transform: translateY(0); }
+    .btn-ghost { color: var(--color-text-muted); border: 1px solid var(--color-border); }
+    .btn-ghost:hover { color: var(--color-text); background: var(--color-surface-offset); }
+    .btn-icon { width: 38px; height: 38px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-md); color: var(--color-text-muted); border: 1px solid transparent; }
+    .btn-icon:hover { background: var(--color-surface-offset); color: var(--color-text); border-color: var(--color-border); }
+
+    /* ── HERO ── */
+    .hero { padding: clamp(var(--space-16), 10vw, var(--space-24)) var(--space-6) clamp(var(--space-12), 8vw, var(--space-20)); text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 40% at 50% 0%, color-mix(in oklab, var(--color-primary) 8%, transparent), transparent); pointer-events: none; }
+    .hero-badge { display: inline-flex; align-items: center; gap: var(--space-2); background: var(--color-primary-highlight); color: var(--color-primary); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: var(--space-1.5) var(--space-4); border-radius: var(--radius-full); margin-bottom: var(--space-6); }
+    .hero-title { font-family: var(--font-display); font-size: var(--text-hero); color: var(--color-text); margin-bottom: var(--space-6); line-height: 1.05; max-width: 14ch; margin-inline: auto; }
+    .hero-title em { font-style: italic; color: var(--color-primary); font-weight: 300; }
+    .hero-subtitle { font-size: var(--text-lg); color: var(--color-text-muted); max-width: 50ch; margin-inline: auto; margin-bottom: var(--space-8); }
+    .hero-cta { display: flex; align-items: center; justify-content: center; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-10); }
+    .hero-note { font-size: var(--text-xs); color: var(--color-text-faint); }
+    .hero-langs { display: flex; align-items: center; justify-content: center; gap: var(--space-2); flex-wrap: wrap; margin-top: var(--space-6); }
+    .lang-pill { font-size: var(--text-xs); padding: var(--space-1) var(--space-3.5); border-radius: var(--radius-full); background: var(--color-surface-offset); color: var(--color-text-muted); border: 1px solid var(--color-divider); }
+
+    /* ── APP SHELL ── */
+    #app { display: none; }
+    #app.active { display: flex; flex-direction: column; height: calc(100dvh - 65px); }
+    #landing { display: block; }
+    #landing.hidden { display: none; }
+
+    /* ── MAIN APP ── */
+    .app-layout { display: grid; grid-template-columns: 240px 1fr; flex: 1; overflow: hidden; }
+    @media (max-width: 768px) { .app-layout { grid-template-columns: 1fr; } .sidebar { display: none; } }
+
+    /* ── SIDEBAR ── */
+    .sidebar { border-right: 1px solid var(--color-divider); display: flex; flex-direction: column; background: var(--color-surface); padding: var(--space-4) 0; overflow-y: auto; }
+    .sidebar-section { padding: 0 var(--space-3) var(--space-4); }
+    .sidebar-label { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-faint); margin-bottom: var(--space-2.5); padding-left: var(--space-3); }
+    .sidebar-item { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2.5) var(--space-4); border-radius: var(--radius-md); font-size: var(--text-sm); font-weight: 500; color: var(--color-text-muted); cursor: pointer; }
+    .sidebar-item:hover { background: var(--color-surface-offset); color: var(--color-text); }
+    .sidebar-item.active { color: var(--color-primary); background: var(--color-primary-highlight); font-weight: 600; }
+    .sidebar-item svg { flex-shrink: 0; width: 16px; height: 16px; }
+    .sidebar-divider { height: 1px; background: var(--color-divider); margin: 0 var(--space-3) var(--space-4); }
+    .sidebar-bottom { margin-top: auto; padding: var(--space-4); }
+    .usage-bar-wrap { margin-top: var(--space-2); }
+    .usage-bar-label { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-muted); margin-bottom: var(--space-2); }
+    .usage-bar { height: 4px; background: var(--color-surface-dynamic); border-radius: var(--radius-full); overflow: hidden; }
+    .usage-bar-fill { height: 100%; background: var(--color-primary); border-radius: var(--radius-full); width: 0%; transition: width 0.5s ease; }
+
+    /* ── PANEL HEADER ── */
+    .main-panel { display: flex; flex-direction: column; overflow: hidden; background: var(--color-bg); }
+    .panel-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4) var(--space-6); border-bottom: 1px solid var(--color-divider); flex-shrink: 0; }
+    .panel-title { font-size: var(--text-lg); font-weight: 700; }
+    .panel-actions { display: flex; gap: var(--space-2); align-items: center; }
+    
+    /* ── DICTATION AREA ── */
+    .dictate-area { flex: 1; display: flex; flex-direction: column; padding: var(--space-6); gap: var(--space-4); overflow-y: auto; }
+    .transcript-box { flex: 1; background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-lg); padding: var(--space-5); font-size: var(--text-base); line-height: 1.7; color: var(--color-text); min-height: 200px; position: relative; overflow-y: auto; white-space: pre-wrap; transition: border-color var(--transition-interactive); }
+    .transcript-placeholder { position: absolute; inset: var(--space-5); color: var(--color-text-faint); pointer-events: none; font-style: italic; }
+    .interim-text { color: var(--color-text-muted); font-style: italic; background: color-mix(in oklab, var(--color-primary) 10%, transparent); border-radius: var(--radius-sm); padding: 1px 4px; }
+
+    /* ── MIC BUTTON ── */
+    .mic-section { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); padding: var(--space-4) 0 var(--space-2); flex-shrink: 0; }
+    .mic-button { width: 76px; height: 76px; border-radius: var(--radius-full); background: var(--color-primary); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0; }
+    .mic-button:hover { background: var(--color-primary-hover); transform: scale(1.06); box-shadow: var(--shadow-lg); }
+    .mic-button:active { background: var(--color-primary-active); transform: scale(0.98); }
+    .mic-button.recording { background: var(--color-error); animation: pulse-ring 1.5s ease-out infinite; }
+    .mic-button svg { pointer-events: none; }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-error) 40%, transparent); }
+      70%  { box-shadow: 0 0 0 22px color-mix(in oklab, var(--color-error) 0%, transparent); }
+      100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-error) 0%, transparent); }
+    }
+    .mic-status { font-size: var(--text-sm); font-weight: 500; color: var(--color-text-muted); }
+    .mic-controls { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; justify-content: center; }
+    
+    .toolbar { display: flex; gap: var(--space-2); padding: var(--space-3) var(--space-6); border-top: 1px solid var(--color-divider); flex-shrink: 0; flex-wrap: wrap; align-items: center; background: var(--color-surface); }
+    .toolbar-label { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-faint); margin-right: var(--space-2); }
+    .chip { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-xs); font-weight: 600; padding: 4px var(--space-3.5); border-radius: var(--radius-full); background: var(--color-surface-offset); color: var(--color-text-muted); cursor: pointer; border: 1px solid var(--color-border); }
+    .chip:hover, .chip.active { border-color: var(--color-primary); color: var(--color-primary); background: var(--color-primary-highlight); }
+
+    /* ── TABS / PANELS ── */
+    .tab-panel { display: none; flex: 1; overflow: hidden; }
+    .tab-panel.active { display: flex; flex-direction: column; }
+
+    /* ── FORMS & INPUTS ── */
+    .settings-panel { padding: var(--space-6); overflow-y: auto; flex: 1; }
+    .settings-section { margin-bottom: var(--space-8); }
+    .settings-title { font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-2); }
+    .settings-desc { font-size: var(--text-sm); color: var(--color-text-muted); margin-bottom: var(--space-5); line-height: 1.6; }
+    
+    input, select, textarea { font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-2.5) var(--space-4); width: 100%; transition: border-color var(--transition-interactive), box-shadow var(--transition-interactive); }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary) 15%, transparent); }
+
+    /* ── DICTIONARY LIST ── */
+    .word-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .word-item { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-4); background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-md); font-size: var(--text-sm); }
+    .word-item button { color: var(--color-text-faint); width: 28px; height: 28px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+    .word-item button:hover { color: var(--color-error); background: var(--color-surface-offset); }
+    .add-word-row { display: flex; gap: var(--space-3); margin-top: var(--space-4); }
+
+    /* ── SNIPPETS ── */
+    .snippet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: var(--space-4); }
+    .snippet-card { background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-lg); padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-3); position: relative; }
+    .snippet-cue { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); }
+    .snippet-text { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.5; white-space: pre-wrap; }
+    .snippet-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: auto; }
+
+    /* ── HISTORY ── */
+    .history-list { display: flex; flex-direction: column; gap: var(--space-3); }
+    .history-item { background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-lg); padding: var(--space-4); cursor: pointer; transition: all var(--transition-interactive); }
+    .history-item:hover { box-shadow: var(--shadow-md); border-color: var(--color-primary); }
+    .history-meta { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-2); }
+    .history-preview { font-size: var(--text-sm); color: var(--color-text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ── TOAST ── */
+    .toast-container { position: fixed; bottom: var(--space-6); right: var(--space-6); display: flex; flex-direction: column; gap: var(--space-3); z-index: 200; pointer-events: none; }
+    .toast { background: var(--color-surface-2); border: 1px solid var(--color-divider); border-radius: var(--radius-lg); padding: var(--space-3) var(--space-5); font-size: var(--text-sm); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: var(--space-3); max-width: 320px; animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .toast-success { border-color: color-mix(in oklab, var(--color-success) 30%, transparent); }
+    .toast-dot { width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--color-success); flex-shrink: 0; }
+    .toast-dot.error { background: var(--color-error); }
+
+    /* ── LANDING FEATURES ── */
+    .section { padding: clamp(var(--space-12), 8vw, var(--space-20)) var(--space-6); }
+    .section-tag { display: inline-block; font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary); margin-bottom: var(--space-4); }
+    .section-title { font-family: var(--font-display); font-size: var(--text-xl); margin-bottom: var(--space-4); }
+    .section-subtitle { font-size: var(--text-base); color: var(--color-text-muted); max-width: 55ch; margin-bottom: var(--space-10); }
+    
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: var(--space-4); }
+    .feature-card { background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-xl); padding: var(--space-6); transition: border-color 0.3s; }
+    .feature-card:hover { border-color: var(--color-primary); }
+    .feature-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4); color: var(--color-primary); }
+    .feature-title { font-size: var(--text-base); font-weight: 700; margin-bottom: var(--space-2); }
+    .feature-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.6; }
+    .feature-card.highlight { background: var(--color-primary-highlight); border-color: color-mix(in oklab, var(--color-primary) 25%, transparent); }
+    .feature-card.highlight .feature-title { color: var(--color-primary); }
+
+    /* ── STATS STRIP ── */
+    .stats-strip { background: var(--color-surface); border-top: 1px solid var(--color-divider); border-bottom: 1px solid var(--color-divider); padding: var(--space-8) var(--space-6); }
+    .stats-inner { display: flex; justify-content: center; gap: clamp(var(--space-8), 6vw, var(--space-16)); flex-wrap: wrap; max-width: var(--content-wide); margin-inline: auto; }
+    .stat-item { text-align: center; }
+    .stat-num { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-primary); font-weight: 400; }
+    .stat-label { font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-1); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── HOW IT WORKS ── */
+    .steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: var(--space-6); }
+    .step { display: flex; flex-direction: column; gap: var(--space-3); }
+    .step-num { font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-primary); line-height: 1; opacity: 0.4; }
+    .step-title { font-size: var(--text-base); font-weight: 700; }
+    .step-desc { font-size: var(--text-sm); color: var(--color-text-muted); }
+
+    /* ── CTA BLOCK ── */
+    .cta-block { text-align: center; padding: clamp(var(--space-16), 10vw, var(--space-24)) var(--space-6); background: linear-gradient(to bottom, var(--color-surface), var(--color-bg)); border-top: 1px solid var(--color-divider); }
+    .cta-block h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+    .cta-block p { font-size: var(--text-lg); color: var(--color-text-muted); max-width: 48ch; margin-inline: auto; margin-bottom: var(--space-8); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--color-surface); border-top: 1px solid var(--color-divider); padding: var(--space-8) var(--space-6); }
+    .footer-inner { max-width: var(--content-wide); margin-inline: auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); }
+    .footer-copy { font-size: var(--text-xs); color: var(--color-text-faint); }
+    .footer-links { display: flex; gap: var(--space-5); }
+    .footer-links a { font-size: var(--text-xs); color: var(--color-text-faint); }
+    .footer-links a:hover { color: var(--color-text-muted); }
+
+    /* ── WRITING STYLES SELECTION ── */
+    .style-card-grid { display: flex; flex-direction: column; gap: var(--space-3); }
+    .style-card-grid .feature-card.active { border-color: var(--color-primary); background: var(--color-primary-highlight); }
+  </style>
+</head>
+<body>
+
+<!-- ── TOAST CONTAINER ── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" id="logoContainer">
+      <!-- V2 SVG Logo Logo component replica -->
+      <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="nav-logo-bg" x1="2" y1="2" x2="46" y2="46" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#6366f1" />
+            <stop offset="100%" stop-color="#4f46e5" />
+          </linearGradient>
+          <linearGradient id="nav-logo-text" x1="8" y1="12" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#c7d2fe" />
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="44" height="44" rx="12" fill="url(#nav-logo-bg)"/>
+        <text x="24" y="34" text-anchor="middle" fill="url(#nav-logo-text)" font-family="Inter, sans-serif" font-size="26" font-weight="800" letter-spacing="-1">V2</text>
+        <rect x="3" y="3" width="42" height="42" rx="11" stroke="white" stroke-opacity="0.12" stroke-width="1" fill="none"/>
+      </svg>
+      <span>VillFlow Web</span>
+      <span class="chip active" style="padding: 2px 8px; border: none; font-size: 10px; background: rgba(99, 102, 241, 0.15); color: #818cf8;">Browser Sandbox</span>
+    </div>
+    <div class="nav-actions">
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#how-it-works">How it works</a>
+      <button class="btn-icon" id="themeToggle" aria-label="Toggle theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="btn btn-primary" id="launchAppBtn" onclick="launchApp()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+        Launch Dictation
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ LANDING PAGE ═══════════════════ -->
+<div id="landing">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-primary);"><circle cx="12" cy="12" r="12"/></svg>
+      100% Free · Client-Side Execution
+    </div>
+    <h1 class="hero-title">Speak. <em>VillFlow</em> writes it cleanly.</h1>
+    <p class="hero-subtitle">Voice-to-text that runs entirely in your browser window. Zero downloads, zero installations, and built-in AI formatting styles.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="launchApp()" style="padding: var(--space-3) var(--space-8); font-size: var(--text-base);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10c0 3.866 3.134 7 7 7s7-3.134 7-7"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+        Open Web Sandbox
+      </button>
+      <a href="#features" class="btn btn-ghost">See Features</a>
+    </div>
+    <p class="hero-note">Runs locally using the Web Speech API — no credentials required.</p>
+    <div class="hero-langs">
+      <span class="lang-pill">English</span>
+      <span class="lang-pill">Español</span>
+      <span class="lang-pill">हिन्दी</span>
+      <span class="lang-pill">中文</span>
+      <span class="lang-pill">한국어</span>
+      <span class="lang-pill">Français</span>
+      <span class="lang-pill">Deutsch</span>
+      <span class="lang-pill">日本語</span>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-num">4×</div><div class="stat-label">Faster than typing</div></div>
+      <div class="stat-item"><div class="stat-num">100+</div><div class="stat-label">Languages</div></div>
+      <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Downloads Needed</div></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Private & Sandbox</div></div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="container--wide">
+      <div class="section-tag">Features</div>
+      <h2 class="section-title">Everything you need to dictate.</h2>
+      <p class="section-subtitle">Core formatting rules and custom helpers packaged inside a lightweight, elegant web tool.</p>
+      <div class="features-grid">
+        <div class="feature-card highlight">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10c0 3.866 3.134 7 7 7s7-3.134 7-7"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+          </div>
+          <div class="feature-title">Immediate Dictation</div>
+          <div class="feature-desc">Transcribe voice locally using browser hardware. Copy with a single click and paste directly into any external app.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div class="feature-title">Auto-punctuation & clean</div>
+          <div class="feature-desc">Automatically strips filler verbal markers (um, uh, like), corrects formatting, and creates structured lists.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+          </div>
+          <div class="feature-title">Multi-Language</div>
+          <div class="feature-desc">Dictate in English, Spanish, German, French, Hindi, Chinese, Japanese, Korean, and more.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          </div>
+          <div class="feature-title">Personal Dictionary</div>
+          <div class="feature-desc">Save names, technical terms, and acronyms to make sure they are always spelled exactly right.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+          </div>
+          <div class="feature-title">Text Snippets</div>
+          <div class="feature-desc">Map quick cue words to long paragraphs. Speak the cue word to automatically insert the complete snippet.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="feature-title">Local History</div>
+          <div class="feature-desc">Your transcripts are securely stored in your local browser storage. Search, review, or export them anytime.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how-it-works" style="background: var(--color-surface); border-top: 1px solid var(--color-divider);">
+    <div class="container--wide">
+      <div class="section-tag">How it works</div>
+      <h2 class="section-title">Minimal steps to write.</h2>
+      <p class="section-subtitle">An instant playground to test voice transcription rules directly on the web.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-title">Launch sandbox</div>
+          <div class="step-desc">Click "Launch Dictation" to open the interactive panel. Give mic permission.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-title">Speak naturally</div>
+          <div class="step-desc">Click the mic and talk. Real-time words will print and automatically clean up as you speak.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-title">Copy or Export</div>
+          <div class="step-desc">Click copy to clipboard or download as a text file for immediate use elsewhere.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BLOCK -->
+  <section class="cta-block">
+    <div class="container">
+      <h2>Experience VillFlow Web</h2>
+      <p>Speak, clean, and write. Free and private in your web browser.</p>
+      <button class="btn btn-primary" onclick="launchApp()" style="padding: var(--space-3) var(--space-10); font-size: var(--text-base);">
+        Start Web Dictation
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-copy">© 2026 VillFlow Web. Free &amp; Open Source. Powered by HTML5 Web Speech API.</div>
+      <div class="footer-links">
+        <a href="https://github.com/SreekarGpalli/VillFlow2.0" target="_blank" rel="noopener noreferrer">GitHub Project</a>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /landing -->
+
+<!-- ═══════════════════ APP SHELL ═══════════════════ -->
+<div id="app">
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Workspace</div>
+        <div class="sidebar-item active" id="side-dictate" onclick="switchPanel('dictate', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10c0 3.866 3.134 7 7 7s7-3.134 7-7"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+          Dictate
+        </div>
+        <div class="sidebar-item" id="side-snippets" onclick="switchPanel('snippets', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+          Snippets
+        </div>
+        <div class="sidebar-item" id="side-dictionary" onclick="switchPanel('dictionary', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          Dictionary
+        </div>
+        <div class="sidebar-item" id="side-history" onclick="switchPanel('history', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          History
+        </div>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Settings</div>
+        <div class="sidebar-item" id="side-styles" onclick="switchPanel('styles', this)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+          Formatting Style
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="usage-bar-wrap">
+          <div class="usage-bar-label">
+            <span>Words Today</span>
+            <span id="wordCountSidebar">0 words</span>
+          </div>
+          <div class="usage-bar"><div class="usage-bar-fill" id="usageBarFill"></div></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-panel">
+
+      <!-- DICTATE PANEL -->
+      <div class="tab-panel active" id="panel-dictate">
+        <div class="panel-header">
+          <div class="panel-title">Dictate</div>
+          <div class="panel-actions">
+            <div class="lang-select-wrap">
+              <label for="langSelect">Language</label>
+              <select id="langSelect" onchange="updateLang()">
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="es-ES">Español</option>
+                <option value="de-DE">Deutsch</option>
+                <option value="fr-FR">Français</option>
+                <option value="hi-IN">हिन्दी</option>
+                <option value="zh-CN">中文 (简体)</option>
+                <option value="ja-JP">日本語</option>
+                <option value="ko-KR">한국어</option>
+              </select>
+            </div>
+            <button class="btn-icon" onclick="copyText()" title="Copy all text" aria-label="Copy all text">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+            <button class="btn-icon" onclick="exportText()" title="Export as .txt" aria-label="Export text">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <button class="btn-icon" onclick="clearText()" title="Clear" aria-label="Clear transcript">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="dictate-area">
+          <div class="transcript-box" id="transcriptBox">
+            <span class="transcript-placeholder" id="transcriptPlaceholder">Click the microphone button below to start dictating...<br><br><span style="font-size: var(--text-xs); opacity: 0.6;">Try saying: "period", "comma", "new line" or "new paragraph". Custom snippets will expand automatically.</span></span>
+            <span id="finalText"></span><span class="interim-text" id="interimText"></span>
+          </div>
+
+          <div class="mic-section">
+            <button class="mic-button" id="micButton" onclick="toggleRecording()" aria-label="Start recording">
+              <svg id="micIcon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="2" width="6" height="12" rx="3"/>
+                <path d="M5 10c0 3.866 3.134 7 7 7s7-3.134 7-7"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+              </svg>
+            </button>
+            <div class="mic-status" id="micStatus">Click to start recording</div>
+            <div class="mic-controls">
+              <button class="btn btn-ghost" onclick="removeFillerWords()" style="font-size: var(--text-xs); padding: 4px var(--space-3.5);">
+                ✕ Strip Fillers
+              </button>
+              <button class="btn btn-ghost" onclick="formatBulletList()" style="font-size: var(--text-xs); padding: 4px var(--space-3.5);">
+                ≡ Bullet List
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <span class="toolbar-label">Format Style:</span>
+          <span class="chip active" id="styleChip-default" onclick="setStyle('default', this)">Natural</span>
+          <span class="chip" id="styleChip-professional" onclick="setStyle('professional', this)">Professional</span>
+          <span class="chip" id="styleChip-casual" onclick="setStyle('casual', this)">Casual</span>
+          <span class="chip" id="styleChip-concise" onclick="setStyle('concise', this)">Concise</span>
+          <span class="chip" id="styleChip-developer" onclick="setStyle('developer', this)">Developer</span>
+          <span style="margin-left: auto; font-size: var(--text-xs); color: var(--color-text-faint);" id="wordCountToolbar">0 words</span>
+        </div>
+      </div>
+
+      <!-- SNIPPETS PANEL -->
+      <div class="tab-panel" id="panel-snippets">
+        <div class="panel-header">
+          <div class="panel-title">Text Snippets</div>
+          <button class="btn btn-primary" onclick="showAddSnippet()" style="font-size: var(--text-xs); padding: var(--space-2) var(--space-4);">+ New Snippet</button>
+        </div>
+        <div class="settings-panel">
+          <div class="settings-desc">Specify shortcut triggers. When you say the trigger word during speech, it will automatically swap in the full expanded paragraph.</div>
+          <div id="snippetGrid" class="snippet-grid"></div>
+          <div id="addSnippetForm" style="display:none; margin-top: var(--space-6); background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-lg); padding: var(--space-5);">
+            <h4 style="font-size: var(--text-base); margin-bottom: var(--space-4);">Create New Snippet</h4>
+            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+              <div>
+                <label style="font-size: var(--text-xs); color: var(--color-text-muted); display: block; margin-bottom: var(--space-2); font-weight: 600;">Cue Word (trigger word)</label>
+                <input type="text" id="snippetCue" placeholder="e.g. signature">
+              </div>
+              <div>
+                <label style="font-size: var(--text-xs); color: var(--color-text-muted); display: block; margin-bottom: var(--space-2); font-weight: 600;">Expanded Text</label>
+                <textarea id="snippetText" rows="3" placeholder="e.g. Best regards, Sreekar Gownivaripalli" style="resize: vertical;"></textarea>
+              </div>
+              <div style="display: flex; gap: var(--space-3); justify-content: flex-end;">
+                <button class="btn btn-ghost" onclick="hideAddSnippet()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSnippet()">Save Snippet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DICTIONARY PANEL -->
+      <div class="tab-panel" id="panel-dictionary">
+        <div class="panel-header">
+          <div class="panel-title">Personal Dictionary</div>
+        </div>
+        <div class="settings-panel">
+          <div class="settings-desc">Add names, products, abbreviations, and jargon that the web transcriber should format correctly. Custom vocabulary mapping helps spelling accuracy.</div>
+          <div class="add-word-row">
+            <input type="text" id="newWord" placeholder="Add word or phrase..." onkeydown="if(event.key==='Enter') addDictionaryWord()" />
+            <button class="btn btn-primary" onclick="addDictionaryWord()" style="white-space: nowrap;">Add Word</button>
+          </div>
+          <div class="word-list" id="wordList" style="margin-top: var(--space-4);"></div>
+        </div>
+      </div>
+
+      <!-- HISTORY PANEL -->
+      <div class="tab-panel" id="panel-history">
+        <div class="panel-header">
+          <div class="panel-title">Session History</div>
+          <button class="btn btn-ghost" onclick="clearHistory()" style="font-size: var(--text-xs); padding: 4px var(--space-3.5);">Clear History</button>
+        </div>
+        <div class="settings-panel">
+          <div id="historyList" class="history-list"></div>
+          <div id="historyEmpty" style="display:none; text-align: center; padding: var(--space-16) var(--space-8); color: var(--color-text-faint);">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto var(--space-4);"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <p>No previous transcripts found.<br>Transcribe some voice to record history.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STYLES PANEL -->
+      <div class="tab-panel" id="panel-styles">
+        <div class="panel-header">
+          <div class="panel-title">Formatting Styles</div>
+        </div>
+        <div class="settings-panel">
+          <div class="settings-desc">Choose a styling model to format your spoken text. This style operates locally to adjust punctuation, casing, or word choices.</div>
+          <div class="style-card-grid">
+            <div class="feature-card active" id="styleCard-default" onclick="setStyle('default', null)" style="cursor: pointer; margin-bottom: 8px;">
+              <div class="feature-title">Natural ✦ Standard</div>
+              <div class="feature-desc">Minimal changes. Standard casing, spacing, and sentence punctuation rules.</div>
+            </div>
+            <div class="feature-card" id="styleCard-professional" onclick="setStyle('professional', null)" style="cursor: pointer; margin-bottom: 8px;">
+              <div class="feature-title">Professional</div>
+              <div class="feature-desc">Formalized phrasing. Capitalizes formal nouns and substitutes slang (e.g. converts "wanna" -> "want to").</div>
+            </div>
+            <div class="feature-card" id="styleCard-casual" onclick="setStyle('casual', null)" style="cursor: pointer; margin-bottom: 8px;">
+              <div class="feature-title">Casual</div>
+              <div class="feature-desc">Friendly conversational output. Preserves relaxed vocabulary and expression style.</div>
+            </div>
+            <div class="feature-card" id="styleCard-concise" onclick="setStyle('concise', null)" style="cursor: pointer; margin-bottom: 8px;">
+              <div class="feature-title">Concise</div>
+              <div class="feature-desc">Removes conversational padding and repetitive phrases to keep the text short and precise.</div>
+            </div>
+            <div class="feature-card" id="styleCard-developer" onclick="setStyle('developer', null)" style="cursor: pointer; margin-bottom: 8px;">
+              <div class="feature-title">Developer Mode</div>
+              <div class="feature-desc">Preserves technical syntax, programming cues, camelCase, PascalCase, and code symbols (e.g. `dot json`).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script>
+  // ── APP NAVIGATION & STATE ──
+  let state = {
+    isRecording: false,
+    finalTranscript: '',
+    interimTranscript: '',
+    lang: 'en-US',
+    style: 'default',
+    wordCount: 0,
+    snippets: [
+      { cue: 'sig', text: 'Best regards,\nSreekar' },
+      { cue: 'hello', text: 'Hi there, thank you for reaching out.' }
+    ],
+    dictionary: ['VillFlow', 'Tauri', 'Groq', 'Speechmatics', 'React'],
+    history: []
+  };
+
+  let recognition = null;
+
+  // Initialize state from localstorage
+  function loadPersistedState() {
+    const savedSnippets = localStorage.getItem('vf_snippets');
+    if (savedSnippets) state.snippets = JSON.parse(savedSnippets);
+    
+    const savedDict = localStorage.getItem('vf_dict');
+    if (savedDict) state.dictionary = JSON.parse(savedDict);
+
+    const savedHistory = localStorage.getItem('vf_history');
+    if (savedHistory) state.history = JSON.parse(savedHistory);
+
+    const savedStyle = localStorage.getItem('vf_style');
+    if (savedStyle) {
+      state.style = savedStyle;
+      updateStyleUI(savedStyle);
+    }
+
+    const savedLang = localStorage.getItem('vf_lang');
+    if (savedLang) {
+      state.lang = savedLang;
+      document.getElementById('langSelect').value = savedLang;
+    }
+    
+    updateWordUsage();
+    renderSnippets();
+    renderDictionary();
+    renderHistory();
+  }
+
+  function saveToStorage(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  // ── PAGE MANAGEMENT ──
+  function launchApp() {
+    document.getElementById('landing').classList.add('hidden');
+    document.getElementById('app').classList.add('active');
+    initSpeechRecognition();
+  }
+
+  function switchPanel(panelId, element) {
+    // Update active tab styles
+    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+    element.classList.add('active');
+
+    // Update active tab panel visibility
+    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+    document.getElementById('panel-' + panelId).classList.add('active');
+  }
+
+  // ── THEME MANAGER ──
+  const themeToggle = document.getElementById('themeToggle');
+  const doc = document.documentElement;
+  
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = doc.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    doc.setAttribute('data-theme', newTheme);
+    localStorage.setItem('vf_theme', newTheme);
+    updateThemeIcon(newTheme);
+  });
+
+  function updateThemeIcon(theme) {
+    if (theme === 'dark') {
+      themeToggle.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+    } else {
+      themeToggle.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    }
+  }
+
+  // Detect and set theme
+  const initialTheme = localStorage.getItem('vf_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  doc.setAttribute('data-theme', initialTheme);
+  updateThemeIcon(initialTheme);
+
+  // ── SPEECH RECOGNITION SYSTEM ──
+  function initSpeechRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      showToast("Speech Recognition API is not supported in this browser. Try Chrome or Edge.", "error");
+      document.getElementById('micButton').disabled = true;
+      document.getElementById('micStatus').textContent = "Browser not supported";
+      return;
+    }
+
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = state.lang;
+
+    recognition.onstart = () => {
+      state.isRecording = true;
+      document.getElementById('micButton').classList.add('recording');
+      document.getElementById('micIcon').innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`;
+      document.getElementById('micStatus').textContent = "Listening... Click to pause";
+      document.getElementById('transcriptPlaceholder').style.display = 'none';
+      showToast("Recording started", "success");
+    };
+
+    recognition.onresult = (event) => {
+      let interim = '';
+      let final = '';
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        let text = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          final += cleanAndFormatSentence(text) + ' ';
+        } else {
+          interim += text;
+        }
+      }
+
+      if (final) {
+        state.finalTranscript += final;
+        // Expand active snippets in real-time
+        state.finalTranscript = expandSnippets(state.finalTranscript);
+        // Correct custom dictionary casing
+        state.finalTranscript = applyDictionary(state.finalTranscript);
+        
+        document.getElementById('finalText').textContent = state.finalTranscript;
+        updateWordCount();
+      }
+      
+      document.getElementById('interimText').textContent = interim;
+      
+      // Auto-scroll transcript container
+      const container = document.getElementById('transcriptBox');
+      container.scrollTop = container.scrollHeight;
+    };
+
+    recognition.onerror = (event) => {
+      console.error(event.error);
+      if (event.error !== 'no-speech') {
+        showToast("Error occurred: " + event.error, "error");
+        stopRecording();
+      }
+    };
+
+    recognition.onend = () => {
+      if (state.isRecording) {
+        // Automatically restart to keep session active (Tauri parity)
+        recognition.start();
+      } else {
+        stopRecording();
+      }
+    };
+  }
+
+  function toggleRecording() {
+    if (!recognition) initSpeechRecognition();
+    if (state.isRecording) {
+      state.isRecording = false;
+      recognition.stop();
+      saveSessionToHistory();
+    } else {
+      recognition.start();
+    }
+  }
+
+  function stopRecording() {
+    state.isRecording = false;
+    document.getElementById('micButton').classList.remove('recording');
+    document.getElementById('micIcon').innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10c0 3.866 3.134 7 7 7s7-3.134 7-7"/><line x1="12" y1="19" x2="12" y2="23"/></svg>`;
+    document.getElementById('micStatus').textContent = "Dictation paused";
+  }
+
+  function updateLang() {
+    const selected = document.getElementById('langSelect').value;
+    state.lang = selected;
+    localStorage.setItem('vf_lang', selected);
+    if (recognition) {
+      recognition.lang = selected;
+      if (state.isRecording) {
+        recognition.stop(); // Restart with new language
+        setTimeout(() => recognition.start(), 200);
+      }
+    }
+    showToast("Language changed to " + selected, "success");
+  }
+
+  // ── REAL-TIME SPEECH FORMATTING RULES ──
+  function cleanAndFormatSentence(text) {
+    let output = text;
+
+    // Remove leading/trailing spaces
+    output = output.trim();
+
+    // Map verbal punctuation markers
+    const punctuationMaps = {
+      ' period': '.', ' full stop': '.', ' comma': ',', ' question mark': '?',
+      ' exclamation mark': '!', ' colon': ':', ' semicolon': ';',
+      ' new line': '\n', ' new paragraph': '\n\n'
+    };
+
+    for (let key in punctuationMaps) {
+      // Regex boundary for language matching
+      const regex = new RegExp('\\b' + key + '\\b', 'gi');
+      output = output.replace(regex, punctuationMaps[key]);
+    }
+
+    // Capitalize first letter of output
+    if (output.length > 0) {
+      output = output.charAt(0).toUpperCase() + output.slice(1);
+    }
+
+    return output;
+  }
+
+  function applyDictionary(text) {
+    let output = text;
+    state.dictionary.forEach(word => {
+      // Match case-insensitive and replace with dictionary entry capitalization
+      const escaped = word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp('\\b' + escaped + '\\b', 'gi');
+      output = output.replace(regex, word);
+    });
+    return output;
+  }
+
+  function expandSnippets(text) {
+    let output = text;
+    state.snippets.forEach(snippet => {
+      const escaped = snippet.cue.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+      const regex = new RegExp('\\b' + escaped + '\\b', 'gi');
+      output = output.replace(regex, snippet.text);
+    });
+    return output;
+  }
+
+  // ── FORMATTING OPERATIONS ──
+  function removeFillerWords() {
+    const fillers = ['um', 'uh', 'like', 'you know', 'ah', 'er', 'so basically'];
+    let formatted = state.finalTranscript;
+    fillers.forEach(filler => {
+      const regex = new RegExp('\\b' + filler + '\\b', 'gi');
+      formatted = formatted.replace(regex, '');
+    });
+    // Clean up double spaces created by replacement
+    formatted = formatted.replace(/\s+/g, ' ').replace(/\s+([.,!?])/g, '$1').trim();
+    state.finalTranscript = formatted;
+    document.getElementById('finalText').textContent = formatted;
+    showToast("Filler words removed", "success");
+    updateWordCount();
+  }
+
+  function formatBulletList() {
+    let lines = state.finalTranscript.split(/[.!?\n]+/);
+    let bullets = lines
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .map(line => `• ${line}`)
+      .join('\n');
+    
+    state.finalTranscript = bullets;
+    document.getElementById('finalText').textContent = bullets;
+    showToast("Formatted as bullet list", "success");
+    updateWordCount();
+  }
+
+  function applyStyleFormatting(text, style) {
+    let output = text;
+    if (style === 'professional') {
+      output = output
+        .replace(/\bgonna\b/gi, 'going to')
+        .replace(/\bwanna\b/gi, 'want to')
+        .replace(/\bgotta\b/gi, 'have to')
+        .replace(/\bain't\b/gi, 'is not');
+      // Capitalize first letter of every sentence
+      output = output.replace(/(^\s*|[.!?]\s+)([a-z])/g, (m, p1, p2) => p1 + p2.toUpperCase());
+    } else if (style === 'concise') {
+      // Remove double words and repeated phrasing
+      output = output.replace(/\b(\w+)\s+\1\b/gi, '$1');
+    } else if (style === 'developer') {
+      // camelCase and code extensions logic
+      output = output
+        .replace(/dot js\b/gi, '.js')
+        .replace(/dot ts\b/gi, '.ts')
+        .replace(/dot json\b/gi, '.json')
+        .replace(/dot html\b/gi, '.html')
+        .replace(/dot css\b/gi, '.css');
+    }
+    return output;
+  }
+
+  // ── TRANSCRIBE ACTIONS ──
+  function copyText() {
+    let textToCopy = state.finalTranscript;
+    
+    // Apply style rules on copy
+    textToCopy = applyStyleFormatting(textToCopy, state.style);
+
+    if (!textToCopy.trim()) {
+      showToast("No text to copy", "error");
+      return;
+    }
+
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => showToast("Polished text copied to clipboard!", "success"))
+      .catch(() => showToast("Failed to copy text", "error"));
+  }
+
+  function exportText() {
+    let textToExport = state.finalTranscript;
+    textToExport = applyStyleFormatting(textToExport, state.style);
+
+    if (!textToExport.trim()) {
+      showToast("No text to export", "error");
+      return;
+    }
+
+    const blob = new Blob([textToExport], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `VillFlow_Transcript_${new Date().toISOString().slice(0,10)}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+    showToast("Downloaded transcript", "success");
+  }
+
+  function clearText() {
+    if (state.finalTranscript && confirm("Are you sure you want to clear the current transcript?")) {
+      state.finalTranscript = '';
+      document.getElementById('finalText').textContent = '';
+      document.getElementById('interimText').textContent = '';
+      document.getElementById('transcriptPlaceholder').style.display = 'block';
+      updateWordCount();
+      showToast("Transcript cleared", "success");
+    }
+  }
+
+  function updateWordCount() {
+    const text = state.finalTranscript.trim();
+    const count = text === '' ? 0 : text.split(/\s+/).length;
+    state.wordCount = count;
+    document.getElementById('wordCountToolbar').textContent = `${count} words`;
+  }
+
+  function setStyle(styleName, element) {
+    state.style = styleName;
+    localStorage.setItem('vf_style', styleName);
+    
+    updateStyleUI(styleName);
+
+    if (element) {
+      document.querySelectorAll('.toolbar .chip').forEach(el => el.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    showToast(`Formatting style set to: ${styleName}`, "success");
+  }
+
+  function updateStyleUI(styleName) {
+    // Sync chip inside Dictate Toolbar
+    const targetChip = document.getElementById('styleChip-' + styleName);
+    if (targetChip) {
+      document.querySelectorAll('.toolbar .chip').forEach(el => el.classList.remove('active'));
+      targetChip.classList.add('active');
+    }
+
+    // Sync card inside Style settings tab
+    document.querySelectorAll('.style-card-grid .feature-card').forEach(card => card.classList.remove('active'));
+    const targetCard = document.getElementById('styleCard-' + styleName);
+    if (targetCard) targetCard.classList.add('active');
+  }
+
+  // ── SNIPPETS MANAGEMENT ──
+  function showAddSnippet() {
+    document.getElementById('addSnippetForm').style.display = 'block';
+  }
+
+  function hideAddSnippet() {
+    document.getElementById('addSnippetForm').style.display = 'none';
+    document.getElementById('snippetCue').value = '';
+    document.getElementById('snippetText').value = '';
+  }
+
+  function saveSnippet() {
+    const cue = document.getElementById('snippetCue').value.trim().toLowerCase();
+    const text = document.getElementById('snippetText').value.trim();
+
+    if (!cue || !text) {
+      showToast("All fields are required", "error");
+      return;
+    }
+
+    // Check if cue word contains spaces
+    if (cue.includes(' ')) {
+      showToast("Cue must be a single word", "error");
+      return;
+    }
+
+    state.snippets.push({ cue, text });
+    saveToStorage('vf_snippets', state.snippets);
+    renderSnippets();
+    hideAddSnippet();
+    showToast("Snippet saved", "success");
+  }
+
+  function deleteSnippet(index) {
+    state.snippets.splice(index, 1);
+    saveToStorage('vf_snippets', state.snippets);
+    renderSnippets();
+    showToast("Snippet deleted", "success");
+  }
+
+  function renderSnippets() {
+    const grid = document.getElementById('snippetGrid');
+    grid.innerHTML = '';
+    
+    state.snippets.forEach((snippet, index) => {
+      const card = document.createElement('div');
+      card.className = 'snippet-card';
+      card.innerHTML = `
+        <div class="snippet-cue">Say "${snippet.cue}"</div>
+        <div class="snippet-text">${snippet.text}</div>
+        <div class="snippet-actions">
+          <button class="btn-icon" onclick="deleteSnippet(${index})" aria-label="Delete snippet">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+          </button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  // ── DICTIONARY MANAGEMENT ──
+  function addDictionaryWord() {
+    const input = document.getElementById('newWord');
+    const word = input.value.trim();
+
+    if (!word) {
+      showToast("Word cannot be empty", "error");
+      return;
+    }
+
+    if (state.dictionary.includes(word)) {
+      showToast("Word already exists in dictionary", "error");
+      return;
+    }
+
+    state.dictionary.push(word);
+    saveToStorage('vf_dict', state.dictionary);
+    renderDictionary();
+    input.value = '';
+    showToast(`Added "${word}" to dictionary`, "success");
+  }
+
+  function removeDictionaryWord(word) {
+    state.dictionary = state.dictionary.filter(w => w !== word);
+    saveToStorage('vf_dict', state.dictionary);
+    renderDictionary();
+    showToast(`Removed "${word}"`, "success");
+  }
+
+  function renderDictionary() {
+    const list = document.getElementById('wordList');
+    list.innerHTML = '';
+    
+    state.dictionary.forEach(word => {
+      const item = document.createElement('div');
+      item.className = 'word-item';
+      item.innerHTML = `
+        <span>${word}</span>
+        <button onclick="removeDictionaryWord('${word}')" aria-label="Remove word">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      `;
+      list.appendChild(item);
+    });
+  }
+
+  // ── HISTORY MANAGEMENT ──
+  function saveSessionToHistory() {
+    const text = state.finalTranscript.trim();
+    if (!text) return;
+
+    const session = {
+      id: Date.now().toString(),
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' · ' + new Date().toLocaleDateString(),
+      text: text,
+      lang: state.lang,
+      style: state.style
+    };
+
+    state.history.unshift(session);
+    saveToStorage('vf_history', state.history);
+    renderHistory();
+    updateWordUsage();
+  }
+
+  function renderHistory() {
+    const list = document.getElementById('historyList');
+    const empty = document.getElementById('historyEmpty');
+
+    list.innerHTML = '';
+    
+    if (state.history.length === 0) {
+      empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
+
+    state.history.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'history-item';
+      card.onclick = () => loadHistoryIntoTranscript(item);
+      card.innerHTML = `
+        <div class="history-meta">
+          <span>${item.timestamp}</span>
+          <span style="text-transform: uppercase;">${item.lang} · ${item.style}</span>
+        </div>
+        <div class="history-preview">${item.text}</div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function loadHistoryIntoTranscript(item) {
+    if (state.finalTranscript && !confirm("Overwrite current workspace transcript with this history item?")) {
+      return;
+    }
+    state.finalTranscript = item.text;
+    state.style = item.style;
+    state.lang = item.lang;
+    
+    document.getElementById('finalText').textContent = item.text;
+    document.getElementById('interimText').textContent = '';
+    document.getElementById('transcriptPlaceholder').style.display = 'none';
+    
+    document.getElementById('langSelect').value = item.lang;
+    updateStyleUI(item.style);
+    updateWordCount();
+    
+    switchPanel('dictate', document.getElementById('side-dictate'));
+    showToast("Loaded transcript from history", "success");
+  }
+
+  function clearHistory() {
+    if (state.history.length > 0 && confirm("Delete all session history?")) {
+      state.history = [];
+      saveToStorage('vf_history', state.history);
+      renderHistory();
+      updateWordUsage();
+      showToast("History cleared", "success");
+    }
+  }
+
+  function updateWordUsage() {
+    const totalWords = state.history.reduce((acc, item) => acc + item.text.split(/\s+/).length, 0);
+    document.getElementById('wordCountSidebar').textContent = `${totalWords} words`;
+    
+    // Animate usage bar (arbitrary scale of 5000 words max)
+    const pct = Math.min((totalWords / 5000) * 100, 100);
+    document.getElementById('usageBarFill').style.width = `${pct}%`;
+  }
+
+  // ── TOAST SYSTEM ──
+  function showToast(message, type = "success") {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    if (type === 'success') toast.classList.add('toast-success');
+    
+    toast.innerHTML = `
+      <div class="toast-dot ${type === 'error' ? 'error' : ''}"></div>
+      <span>${message}</span>
+    `;
+    
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(8px)';
+      toast.style.transition = 'opacity 0.3s, transform 0.3s';
+      setTimeout(() => toast.remove(), 300);
+    }, 2500);
+  }
+
+  // Run initial state load
+  loadPersistedState();
+</script>
+</body>
+</html>
