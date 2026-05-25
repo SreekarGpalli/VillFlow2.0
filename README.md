@@ -81,10 +81,28 @@ The compiled binaries will be outputted to:
 
 ## 🔧 Configuration & Customization
 
-### API Setup
-To unlock full functionality, you must configure the following APIs within the Settings dashboard:
-1. **Speechmatics API Key**: Generate a JWT/Token from the [Speechmatics Portal](https://portal.speechmatics.com/).
-2. **Groq API Key**: Create an API key in the [Groq Console](https://console.groq.com/).
+## 🔧 Configuration & Customization
+
+### 🔑 Getting Your API Keys (100% Free)
+
+VillFlow 2.0 connects directly from your machine to Speechmatics and Groq. Both providers offer **excellent free tiers** that allow you to use VillFlow completely free of charge:
+
+#### 1. Speechmatics (Real-Time Speech-to-Text)
+* **What you get**: **4 Hours of Free Transcription** every single month.
+* **How to get it for free**:
+  1. Go to the [Speechmatics Portal](https://portal.speechmatics.com/) and register for a free account.
+  2. In the dashboard sidebar, click on **API Keys**.
+  3. Click **Generate New API Key**.
+  4. Copy the generated key and paste it into the **Services & APIs** tab in the VillFlow settings panel.
+
+#### 2. Groq Cloud (Ultra-Fast Text Cleanup & Commands)
+* **What you get**: **Free API access** to state-of-the-art open models (like LLaMA 3.3 and Gemma 2) with high rate limits, perfect for personal assistants.
+* **How to get it for free**:
+  1. Go to the [Groq Console](https://console.groq.com/) and sign up.
+  2. In the sidebar, click on **API Keys**.
+  3. Click **Create API Key**, enter a name (e.g., `VillFlow`), and copy it.
+  4. Paste the key into the **Services & APIs** tab in the VillFlow settings panel.
+  5. Select your preferred model (e.g., `llama-3.3-70b-versatile`) from the models dropdown in VillFlow.
 
 ### Prompt Templates
 Custom instructions can be defined in the **Prompts** tab to dictate how the assistant formats your transcript. For example:
