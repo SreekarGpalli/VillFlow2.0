@@ -1,0 +1,82 @@
+[package]
+name = "villflow"
+version = "2.0.0"
+description = "VillFlow 2.0 — Push-to-talk voice dictation for Windows"
+authors = ["VillFlow"]
+edition = "2021"
+license = "MIT"
+
+[lib]
+name = "villflow_lib"
+crate-type = ["rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# --- Tauri core ---
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-notification = "2"
+
+# --- Serialization ---
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+# --- Async runtime ---
+tokio = { version = "1", features = ["full"] }
+
+# --- Audio capture (WASAPI) ---
+cpal = "0.15"
+
+# --- Audio resampling ---
+rubato = "0.16"
+
+# --- WebSocket (Speechmatics streaming) ---
+tokio-tungstenite = { version = "0.26", features = ["native-tls"] }
+
+# --- HTTP client (Groq LLM) ---
+reqwest = { version = "0.12", features = ["json"] }
+
+# --- Global hotkeys (Windows low-level keyboard hook) ---
+windows-sys = { version = "0.52", features = [
+    "Win32_Foundation",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Threading",
+    "Win32_System_Diagnostics_Debug"
+] }
+
+# --- Text injection ---
+enigo = "0.6"
+clipboard-win = "5"
+
+# --- Credential storage (Windows Credential Manager / DPAPI) ---
+keyring = { version = "3", features = ["windows-native"] }
+
+# --- Windows registry (startup registration) ---
+winreg = "0.55"
+
+# --- Logging ---
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-appender = "0.2"
+
+# --- Utilities ---
+bytes = "1"
+dirs = "6"
+thiserror = "2"
+parking_lot = "0.12"
+futures-util = { version = "0.3.32", features = ["sink"] }
+http = "1.4.0"
+
+[target.'cfg(not(target_os = "windows"))'.dependencies]
+# This block intentionally left empty — the app only builds on Windows.
+# Non-Windows builds will fail due to win-hotkeys, clipboard-win, winreg dependencies.
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+opt-level = "s"

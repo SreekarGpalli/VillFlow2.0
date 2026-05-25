@@ -1,0 +1,59 @@
+[[permission]]
+identifier = "allow-get-config-path"
+description = "Allows getting the config file path"
+commands.allow = ["get_config_path"]
+
+[[permission]]
+identifier = "allow-get-settings"
+description = "Allows loading settings"
+commands.allow = ["get_settings"]
+
+[[permission]]
+identifier = "allow-save-settings"
+description = "Allows saving settings"
+commands.allow = ["save_settings"]
+
+[[permission]]
+identifier = "allow-get-api-key"
+description = "Allows retrieving API keys from vault"
+commands.allow = ["get_api_key"]
+
+[[permission]]
+identifier = "allow-set-api-key"
+description = "Allows saving API keys to vault"
+commands.allow = ["set_api_key"]
+
+[[permission]]
+identifier = "allow-list-audio-devices"
+description = "Allows listing audio input devices"
+commands.allow = ["list_audio_devices"]
+
+[[permission]]
+identifier = "allow-open-log-folder"
+description = "Allows opening the logs folder in explorer"
+commands.allow = ["open_log_folder"]
+
+[[permission]]
+identifier = "allow-reset-all-settings"
+description = "Allows resetting all settings to defaults"
+commands.allow = ["reset_all_settings"]
+
+[[permission]]
+identifier = "allow-list-groq-models"
+description = "Allows listing available Groq models"
+commands.allow = ["list_groq_models"]
+
+[[permission]]
+identifier = "allow-get-default-prompts"
+description = "Allows getting the default STT and command prompts"
+commands.allow = ["get_default_prompts"]
+
+[[permission]]
+identifier = "allow-get-default-settings"
+description = "Allows getting the default application settings"
+commands.allow = ["get_default_settings"]
+
+[[permission]]
+identifier = "allow-get-default-groq-models"
+description = "Allows getting the default Groq models list"
+commands.allow = ["get_default_groq_models"]
