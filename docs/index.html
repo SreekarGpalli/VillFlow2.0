@@ -112,7 +112,7 @@
     .nav-link:hover { color: var(--color-text); background: var(--color-surface-offset); }
 
     /* ── BUTTONS ── */
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-2.5) var(--space-5); border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 600; white-space: nowrap; cursor: pointer; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-2.5) var(--space-6); border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 600; white-space: nowrap; cursor: pointer; }
     .btn-primary { background: var(--color-primary); color: #fff; box-shadow: var(--shadow-sm); }
     .btn-primary:hover { background: var(--color-primary-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
     .btn-primary:active { background: var(--color-primary-active); transform: translateY(0); }
@@ -181,6 +181,33 @@
     .download-card:hover { border-color: var(--color-primary); }
     .download-title { font-size: var(--text-base); font-weight: 700; color: var(--color-text); }
     .download-desc { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.5; }
+    .download-card .btn { width: 100%; margin-top: var(--space-4); display: flex; }
+
+    /* ── INPUT FIELDS & BUTTON POLISH ── */
+    input[type="text"], input[type="password"], select, textarea {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-2.5) var(--space-4);
+      width: 100%;
+      transition: border-color var(--transition-interactive), box-shadow var(--transition-interactive);
+    }
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      border-radius: var(--radius-sm);
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+    input:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      background: var(--color-surface-offset);
+    }
 
     /* ── INTERACTIVE MOCKUP ── */
     .mockup-container { margin-top: var(--space-12); position: relative; max-width: 800px; margin-inline: auto; border: 1px solid var(--color-divider); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-lg); overflow: hidden; display: flex; flex-direction: column; height: 420px; }
@@ -193,7 +220,7 @@
     .mockup-window-title { font-size: 11px; font-weight: 600; color: var(--color-text-muted); margin-right: 28px; }
     .mockup-layout { display: grid; grid-template-columns: 180px 1fr; flex: 1; overflow: hidden; }
     .mockup-sidebar { border-right: 1px solid var(--color-divider); background: var(--color-surface-offset); padding: var(--space-4) 0; }
-    .mockup-item { display: flex; align-items: center; gap: 8px; padding: 6px var(--space-4); font-size: 12px; color: var(--color-text-muted); font-weight: 500; cursor: pointer; }
+    .mockup-item { display: flex; align-items: center; gap: 8px; padding: 8px var(--space-4); font-size: 12px; color: var(--color-text-muted); font-weight: 500; cursor: pointer; }
     .mockup-item.active { background: var(--color-primary-highlight); color: var(--color-primary); font-weight: 600; }
     .mockup-content { padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); overflow-y: auto; text-align: left; }
     .mockup-pill-overlay { position: absolute; right: 24px; bottom: 24px; display: flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: var(--radius-full); background: color-mix(in oklab, var(--color-surface-offset) 90%, #000); border: 1px solid var(--color-border); box-shadow: var(--shadow-lg); font-size: 12px; font-weight: 600; color: var(--color-text); }
@@ -280,9 +307,9 @@
         <div class="mockup-content" id="mock-panel-general">
           <h4 style="font-weight: 700;">General Options</h4>
           <div style="opacity: 0.7; font-size: 13px;">Configure global application behaviors and auto-start controls.</div>
-          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; margin-top: 8px;">
-            <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" checked style="width: auto;"> Launch VillFlow on system startup</label>
-            <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" checked style="width: auto;"> Show on-screen status overlay pill</label>
+          <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px; margin-top: 8px;">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;"><input type="checkbox" checked> Launch VillFlow on system startup</label>
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;"><input type="checkbox" checked> Show on-screen status overlay pill</label>
           </div>
         </div>
         <div class="mockup-content" id="mock-panel-hotkeys" style="display: none;">
@@ -368,7 +395,7 @@
       <div class="download-card">
         <div class="download-title">Windows Installer (MSI)</div>
         <div class="download-desc">Recommended for standard installation. Registers shortcuts and supports standard system uninstall.</div>
-        <a class="btn btn-primary" href="https://github.com/SreekarGpalli/VillFlow2.0/releases/download/v2.0.0/VillFlow_2.0.0_x64_en-US.msi" style="margin-top: var(--space-4);">
+        <a class="btn btn-primary" href="https://github.com/SreekarGpalli/VillFlow2.0/releases/download/v2.0.0/VillFlow_2.0.0_x64_en-US.msi">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download MSI Setup
         </a>
@@ -378,7 +405,7 @@
       <div class="download-card">
         <div class="download-title">NSIS Setup Installer (EXE)</div>
         <div class="download-desc">Alternative standalone installer. Quick installation with lightweight executable configuration.</div>
-        <a class="btn btn-ghost" href="https://github.com/SreekarGpalli/VillFlow2.0/releases/download/v2.0.0/VillFlow_2.0.0_x64-setup.exe" style="margin-top: var(--space-4);">
+        <a class="btn btn-ghost" href="https://github.com/SreekarGpalli/VillFlow2.0/releases/download/v2.0.0/VillFlow_2.0.0_x64-setup.exe">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download Setup EXE
         </a>
@@ -493,11 +520,9 @@
 
   // Interactive Mockup Tab Switching
   function switchMockTab(tabId) {
-    // Deactivate all mockup tabs and content panels
     document.querySelectorAll('.mockup-item').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.mockup-content').forEach(el => el.style.display = 'none');
     
-    // Activate clicked tab and corresponding panel
     document.getElementById('mock-tab-' + tabId).classList.add('active');
     document.getElementById('mock-panel-' + tabId).style.display = 'flex';
   }
