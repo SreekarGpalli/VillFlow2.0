@@ -10,6 +10,13 @@
 
 ---
 
+### 🌐 Live Web Demo
+
+You can try the core dictation and local formatting rules instantly inside your browser without any installation:
+👉 **[Launch VillFlow Web Playground](https://sreekargpalli.github.io/VillFlow2.0/)**
+
+---
+
 ## ✨ Key Features
 
 - **🎙️ Global Push-to-Talk**: Press a custom hotkey anywhere in Windows to record, transcribe, and automatically type out your spoken thoughts.
