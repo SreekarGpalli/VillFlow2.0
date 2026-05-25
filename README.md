@@ -10,10 +10,10 @@
 
 ---
 
-### 🌐 Live Web Demo
+### 🌐 Live Download Page
 
-You can try the core dictation and local formatting rules instantly inside your browser without any installation:
-👉 **[Launch VillFlow Web Playground](https://sreekargpalli.github.io/VillFlow2.0/)**
+Visit our live hosted download page to get the latest pre-compiled installers for Windows:
+👉 **[VillFlow Download Center](https://sreekargpalli.github.io/VillFlow2.0/)**
 
 ---
 
