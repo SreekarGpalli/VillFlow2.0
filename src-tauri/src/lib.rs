@@ -510,6 +510,11 @@ pub fn run() {
                 AppSettings::default()
             });
 
+            // Synchronize the startup registry setting on application launch
+            if let Err(e) = config::register_startup(settings.launch_at_startup) {
+                tracing::error!("Failed to register startup shortcut in registry: {e}");
+            }
+
             let http_client = reqwest::Client::builder()
                 .timeout(std::time::Duration::from_secs(30))
                 .build()

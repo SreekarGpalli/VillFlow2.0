@@ -196,6 +196,29 @@ pub fn save_settings(settings: &AppSettings) -> Result<(), ConfigError> {
     Ok(())
 }
 
+/// Helper to register or unregister application in Windows startup registry.
+pub fn register_startup(enabled: bool) -> Result<(), String> {
+    use winreg::enums::{HKEY_CURRENT_USER, KEY_WRITE};
+    use winreg::RegKey;
+
+    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+    let path = r"Software\Microsoft\Windows\CurrentVersion\Run";
+    
+    let exe_path = std::env::current_exe()
+        .map_err(|e| format!("Failed to get current exe path: {e}"))?;
+        
+    let key = hkcu.open_subkey_with_flags(path, KEY_WRITE)
+        .map_err(|e| format!("Failed to open registry key: {e}"))?;
+        
+    if enabled {
+        key.set_value("VillFlow", &exe_path.to_string_lossy().as_ref())
+            .map_err(|e| format!("Failed to write startup key: {e}"))?;
+    } else {
+        let _ = key.delete_value("VillFlow");
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -206,5 +229,29 @@ mod tests {
         let serialized = toml::to_string_pretty(&original).unwrap();
         let deserialized: AppSettings = toml::from_str(&serialized).unwrap();
         assert_eq!(original, deserialized);
+    }
+
+    #[test]
+    fn test_register_startup() {
+        // Test enabling startup
+        let res = register_startup(true);
+        assert!(res.is_ok(), "Failed to enable startup: {:?}", res.err());
+
+        // Verify key exists via winreg
+        use winreg::enums::{HKEY_CURRENT_USER, KEY_READ};
+        use winreg::RegKey;
+        let hkcu = RegKey::predef(HKEY_CURRENT_USER);
+        let path = r"Software\Microsoft\Windows\CurrentVersion\Run";
+        let key = hkcu.open_subkey_with_flags(path, KEY_READ).unwrap();
+        let val: String = key.get_value("VillFlow").unwrap();
+        assert!(!val.is_empty());
+
+        // Test disabling startup
+        let res = register_startup(false);
+        assert!(res.is_ok(), "Failed to disable startup: {:?}", res.err());
+
+        // Verify key no longer exists
+        let val_err = key.get_value::<String, _>("VillFlow");
+        assert!(val_err.is_err(), "VillFlow startup key should have been deleted");
     }
 }

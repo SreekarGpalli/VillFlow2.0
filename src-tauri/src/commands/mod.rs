@@ -3,32 +3,9 @@
 use tauri::State;
 use std::sync::Arc;
 use crate::AppState;
-use crate::config::{AppSettings, save_settings as save_settings_to_disk, config_dir};
+use crate::config::{AppSettings, save_settings as save_settings_to_disk, config_dir, register_startup};
 use crate::credentials::{save_key, load_key};
 use crate::audio::{enumerate_devices, AudioDevice};
-
-/// Helper to register or unregister application in Windows startup registry.
-fn register_startup(enabled: bool) -> Result<(), String> {
-    use winreg::enums::{HKEY_CURRENT_USER, KEY_WRITE};
-    use winreg::RegKey;
-
-    let hkcu = RegKey::predef(HKEY_CURRENT_USER);
-    let path = r"Software\Microsoft\Windows\CurrentVersion\Run";
-    
-    let exe_path = std::env::current_exe()
-        .map_err(|e| format!("Failed to get current exe path: {e}"))?;
-        
-    let key = hkcu.open_subkey_with_flags(path, KEY_WRITE)
-        .map_err(|e| format!("Failed to open registry key: {e}"))?;
-        
-    if enabled {
-        key.set_value("VillFlow", &exe_path.to_string_lossy().as_ref())
-            .map_err(|e| format!("Failed to write startup key: {e}"))?;
-    } else {
-        let _ = key.delete_value("VillFlow");
-    }
-    Ok(())
-}
 
 #[tauri::command]
 pub async fn get_config_path() -> Result<String, String> {
